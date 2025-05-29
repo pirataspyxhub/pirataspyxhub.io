@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pirata Spyx hub</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --color-main: #2b2d42;
+      --color-accent: #8d99ae;
+      --color-highlight: #00b894;
+      --color-bg: #f8f9fa;
+      --color-white: #fff;
+      --color-dark: #22223b;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Roboto', Arial, sans-serif;
+      background: var(--color-bg);
+      color: var(--color-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      background: var(--color-main);
+      color: var(--color-white);
+      padding: 2.1rem 1rem 1.2rem 1rem;
+      text-align: center;
+      position: relative;
+    }
+    header i {
+      font-size: 2.5rem;
+      color: var(--color-highlight);
+      margin-bottom: 0.5rem;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 2.2rem;
+      letter-spacing: 1px;
+    }
+    header p {
+      margin: 0.7rem 0 0 0;
+      color: var(--color-accent);
+      font-size: 1.1rem;
+    }
+    .header-footer-bar {
+      margin-top: 1.2rem;
+      background: var(--color-main);
+      color: var(--color-accent);
+      padding: 0.45rem 0;
+      font-size: 0.98rem;
+      font-weight: 500;
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(44,62,80,0.08);
+    }
+    nav {
+      margin-top: 1.5rem;
+      text-align: center;
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+    nav button {
+      background: none;
+      border: none;
+      color: var(--color-highlight);
+      font-weight: bold;
+      font-size: 1.07rem;
+      cursor: pointer;
+      padding: 0.4rem 1.3rem;
+      border-radius: 6px;
+      transition: background 0.2s, color 0.2s;
+    }
+    nav button.active, nav button:hover {
+      background: var(--color-highlight);
+      color: var(--color-white);
+    }
+    main {
+      flex: 1 1 auto;
+      max-width: 980px;
+      width: 100%;
+      margin: 2rem auto 0 auto;
+      background: var(--color-white);
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(44, 62, 80,0.05);
+      padding: 2rem 1.5rem;
+      min-height: 400px;
+    }
+    .section {
+      display: none;
+      animation: fadein 0.25s;
+    }
+    .section.active {
+      display: block;
+    }
+    @keyframes fadein {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+    /* Inicio */
+    .about-content {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.2rem;
+    }
+    .about-icon {
+      font-size: 3rem;
+      color: var(--color-highlight);
+      background: #e0ece6;
+      border-radius: 50%;
+      width: 80px;
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .about-text {
+      flex: 1;
+      min-width: 230px;
+      font-size: 1.12rem;
+    }
+    .about-highlights {
+      margin: 1.3rem 0 1.5rem 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.1rem;
+      justify-content: space-around;
+    }
+    .highlight {
+      background: #e0ece6;
+      border-radius: 9px;
+      padding: 1rem 1.1rem;
+      min-width: 170px;
+      text-align: center;
+      flex: 1 1 170px;
+      box-shadow: 0 1px 6px rgba(44,62,80,0.06);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .highlight i {
+      font-size: 2rem;
+      color: var(--color-highlight);
+      margin-bottom: 0.2rem;
+    }
+    .highlight span {
+      font-size: 1rem;
+      color: var(--color-main);
+      font-weight: bold;
+    }
+    .highlight small {
+      color: var(--color-dark);
+      font-size: 0.96rem;
+      font-weight: normal;
+    }
+    .cta {
+      display: flex;
+      justify-content: center;
+      margin: 1.6rem 0 1rem 0;
+    }
+    .cta-btn {
+      background: var(--color-highlight);
+      color: var(--color-white);
+      border: none;
+      border-radius: 6px;
+      padding: 0.7rem 2.2rem;
+      font-size: 1.07rem;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 2px 4px rgba(44,62,80,0.08);
+      transition: background 0.2s;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .cta-btn:hover {
+      background: var(--color-main);
+      color: var(--color-white);
+    }
+    /* Servicios */
+    .services-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      margin-bottom: 1.2rem;
+    }
+    .service-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 1.3rem;
+      background: var(--color-bg);
+      border-radius: 10px;
+      box-shadow: 0 2px 7px rgba(44,62,80,0.04);
+      padding: 1.1rem 1rem;
+      flex-wrap: wrap;
+      position: relative;
+    }
+    .service-icon {
+      font-size: 2.2rem;
+      color: var(--color-highlight);
+      margin-top: 2px;
+    }
+    .service-info {
+      flex: 1 1 180px;
+    }
+    .service-title {
+      font-size: 1.1rem;
+      font-weight: bold;
+      margin-bottom: 0.2rem;
+    }
+    .service-desc {
+      font-size: 0.98rem;
+      color: var(--color-dark);
+      margin-bottom: 0.7rem;
+    }
+    .service-actions {
+      min-width: 120px;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      align-items: flex-end;
+      justify-content: flex-end;
+    }
+    .reserve-btn {
+      display: inline-block;
+      background: var(--color-highlight);
+      color: var(--color-white);
+      border: none;
+      border-radius: 5px;
+      padding: 0.5rem 1.2rem;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s;
+      margin-top: 0.3rem;
+      white-space: nowrap;
+    }
+    .reserve-btn:hover {
+      background: var(--color-main);
+    }
+    /* Precios */
+    .prices-list {
+      width: 100%;
+      max-width: 650px;
+      margin: 0 auto 1rem auto;
+      border-collapse: collapse;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 2px 6px rgba(44,62,80,0.04);
+      background: var(--color-bg);
+    }
+    .prices-list th, .prices-list td {
+      padding: 0.8rem 1rem;
+      text-align: left;
+    }
+    .prices-list th {
+      background: var(--color-main);
+      color: var(--color-white);
+      font-size: 1.04rem;
+      font-weight: bold;
+      border-bottom: 2px solid var(--color-highlight);
+    }
+    .prices-list td {
+      border-bottom: 1px solid #ececec;
+      color: var(--color-main);
+      font-size: 1rem;
+    }
+    .prices-list tr:last-child td {
+      border-bottom: none;
+    }
+    .price-icon {
+      font-size: 1.3rem;
+      color: var(--color-highlight);
+      margin-right: 0.5rem;
+      vertical-align: middle;
+    }
+    /* Contacto */
+    .contact-list {
+      list-style: none;
+      padding: 0;
+      margin: 1rem 0 0 0;
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+      max-width: 430px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .contact-list li {
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
+      font-size: 1.11rem;
+    }
+    .contact-list a {
+      color: var(--color-main);
+      text-decoration: none;
+      word-break: break-all;
+      transition: color 0.18s;
+      font-weight: 500;
+    }
+    .contact-list a:hover {
+      color: var(--color-highlight);
+      text-decoration: underline;
+    }
+    .contact-list i {
+      font-size: 1.6rem;
+      color: var(--color-highlight);
+      min-width: 1.6rem;
+      text-align: center;
+    }
+    footer {
+      background: var(--color-main);
+      color: var(--color-white);
+      text-align: center;
+      padding: 1.2rem 0 1.1rem 0;
+      font-size: 0.98rem;
+      letter-spacing: 0.3px;
+      margin-top: 2rem;
+      border-radius: 0 0 12px 12px;
+      font-family: 'Roboto', Arial, sans-serif;
+    }
+    .rights {
+      color: var(--color-accent);
+      font-size: 0.96rem;
+      margin-top: 0.35rem;
+    }
+    @media (max-width: 700px) {
+      main { padding: 1rem; }
+      .about-content { flex-direction: column; text-align: center; }
+      .about-icon { margin: 0 auto 1rem; }
+      .about-highlights { flex-direction: column; gap: 1rem; }
+      .services-list, .prices-list { font-size: 0.97rem;}
+      .service-item { flex-direction: column; gap: 0.4rem; }
+      .service-actions { align-items: stretch; }
+      .contact-list { font-size: 1.01rem;}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <i class="fas fa-shield-alt"></i>
+    <h1>Pirata Spyx hub</h1>
+    <p>Servicios Informáticos , confiables y a tu alcance</p>
+    <div class="header-footer-bar">
+      © 2025 Pirata Spyx hub — Servicios informáticos
+    </div>
+    <nav>
+      <button id="nav-inicio" class="active" onclick="showSection('inicio')"><i class="fas fa-home"></i> Inicio</button>
+      <button id="nav-servicios" onclick="showSection('servicios')"><i class="fas fa-laptop-code"></i> Servicios</button>
+      <button id="nav-precios" onclick="showSection('precios')"><i class="fas fa-tags"></i> Precios</button>
+      <button id="nav-contacto" onclick="showSection('contacto')"><i class="fas fa-address-book"></i> Contacto</button>
+    </nav>
+  </header>
+  <main>
+    <!-- INICIO -->
+    <section id="inicio" class="section active">
+      <div class="about-content">
+        <div class="about-icon"><i class="fas fa-user-cog"></i></div>
+        <div class="about-text">
+          <h2>Bienvenido a adguardtch</h2>
+          <p>
+            Soy un especialista independiente dedicado a solucionar problemas informáticos en PC y móviles.<br>
+            Atención personalizada, confiable y rápida. ¡Tu tecnología en buenas manos!
+          </p>
+        </div>
+      </div>
+      <div class="about-highlights">
+        <div class="highlight">
+          <i class="fas fa-bolt"></i>
+          <span>Servicio Express</span>
+          <small>Respuestas rápidas, soluciones en el menor tiempo posible.</small>
+        </div>
+        <div class="highlight">
+          <i class="fas fa-user-shield"></i>
+          <span>Confianza y Seguridad</span>
+          <small>Tu información y tus dispositivos siempre protegidos.</small>
+        </div>
+        <div class="highlight">
+          <i class="fas fa-award"></i>
+          <span>Metodos De Pagos</span>
+          <small>se aceptan Pagos En Transferncia , Efectivo , Saldo Movil y USD.</small>
+        </div>
+        <div class="highlight">
+          <i class="fas fa-thumbs-up"></i>
+          <span>Atención Personalizada</span>
+          <small>Trato directo, cordial y adaptado a cada cliente.</small>
+        </div>
+      </div>
+      <div class="cta">
+        <a class="cta-btn" onclick="showSection('servicios')" href="#servicios">
+          <i class="fas fa-laptop-code"></i> Ver Servicios
+        </a>
+      </div>
+      <div class="cta">
+        <a class="cta-btn" onclick="showSection('error 443')" href="https://ouch-prod-src-cdn.icons8.com/pz/videos/8xKuL3AuSG50LCyd.webm/">
+          <i class="fas fa-laptop-code"></i> Promocion Especial
+        </a>
+      </div>
+    </section>
+    <!-- SERVICIOS -->
+    <section id="servicios" class="section">
+      <h2><i class="fas fa-laptop-code"></i> Servicios</h2>
+      <div class="services-list">
+        <div class="service-item">
+          <span class="service-icon"><i class="fas fa-desktop"></i></span>
+          <div class="service-info">
+            <div class="service-title">Resintalación de sistema operativo en PC</div>
+            <div class="service-desc">Formateo, instalación limpia y configuración básica de Windows.</div>
+          </div>
+          <div class="service-actions">
+            <a class="reserve-btn" target="_blank" href="https://wa.me/5356639178?text=Hola%2C+necesito+su+ayuda+con+la+resintalaci%C3%B3n+de+sistema+operativo+en+PC.">
+              <i class="fab fa-whatsapp"></i> Reservar
+            </a>
+          </div>
+        </div>
+        <div class="service-item">
+          <span class="service-icon"><i class="fas fa-mobile-alt"></i></span>
+          <div class="service-info">
+            <div class="service-title">Eliminación de cuentas Google en móviles</div>
+            <div class="service-desc">Quito cuentas Google bloqueadas o olvidadas en dispositivos Android.</div>
+          </div>
+          <div class="service-actions">
+            <a class="reserve-btn" target="_blank" href="https://wa.me/5356639178?text=Hola%2C+necesito+el+servicio+de+eliminaci%C3%B3n+de+cuentas+Google+en+m%C3%B3viles.">
+              <i class="fab fa-whatsapp"></i> Reservar
+            </a>
+          </div>
+        </div>
+        <div class="service-item">
+          <span class="service-icon"><i class="fas fa-unlock-alt"></i></span>
+          <div class="service-info">
+            <div class="service-title">Desbloqueo Windows Modo S en PC</div>
+            <div class="service-desc">Cambio de Modo S a Windows Home/Pro para instalar cualquier programa.</div>
+          </div>
+          <div class="service-actions">
+            <a class="reserve-btn" target="_blank" href="https://wa.me/5356639178?text=Hola%2C+necesito+el+servicio+de+desbloqueo+de+Windows+Modo+S+en+PC.">
+              <i class="fab fa-whatsapp"></i> Reservar
+            </a>
+          </div>
+        </div>
+        <div class="service-item">
+          <span class="service-icon"><i class="fab fa-apple"></i></span>
+          <div class="service-info">
+            <div class="service-title">Instalación de Windows en Mac OS</div>
+            <div class="service-desc">Instalo Windows en computadoras Apple vía Bootcamp o virtualización.</div>
+          </div>
+          <div class="service-actions">
+            <a class="reserve-btn" target="_blank" href="https://wa.me/5356639178?text=Hola%2C+necesito+el+servicio+de+instalaci%C3%B3n+de+Windows+en+Mac+OS.">
+              <i class="fab fa-whatsapp"></i> Reservar
+            </a>
+          </div>
+        </div>
+        <div class="service-item">
+          <span class="service-icon"><i class="fas fa-key"></i></span>
+          <div class="service-info">
+            <div class="service-title">Desbloqueo de contraseña</div>
+            <div class="service-desc">Recuperación o remoción de contraseñas olvidadas en laptops, desktops y móviles.</div>
+          </div>
+          <div class="service-actions">
+            <a class="reserve-btn" target="_blank" href="https://wa.me/5356639178?text=Hola%2C+necesito+el+servicio+de+desbloqueo+de+contrase%C3%B1a.">
+              <i class="fab fa-whatsapp"></i> Reservar
+            </a>
+          </div>
+        </div>
+        <div class="service-item">
+          <span class="service-icon"><i class="fas fa-usb"></i></span>
+          <div class="service-info">
+            <div class="service-title">Llenado y grabación de memorias USB por encargo</div>
+            <div class="service-desc">Descargo y grabo películas, series, novelas o archivos que tú me solicites. El precio depende de la cantidad y dificultad de descarga.</div>
+          </div>
+          <div class="service-actions">
+            <a class="reserve-btn" target="_blank"
+              href="https://wa.me/5356639178?text=Hola%2C+necesito+llenado+o+grabaci%C3%B3n+de+memoria+USB+por+encargo+%28descarga+de+contenido%29.">
+              <i class="fab fa-whatsapp"></i> Reservar
+            </a>
+          </div>
+        </div>
+        <div class="service-item">
+          <span class="service-icon"><i class="fas fa-hdd"></i></span>
+          <div class="service-info">
+            <div class="service-title">Copia de archivos desde mi colección personal</div>
+            <div class="service-desc">Te copio series, películas, novelas, música y otros archivos almacenados en mi banco local a tu memoria USB <b>a solo 8 CUP por GB</b>.</div>
+          </div>
+          <div class="service-actions">
+            <a class="reserve-btn" target="_blank"
+              href="https://wa.me/5356639178?text=Hola%2C+quiero+copiar+archivos+de+tu+banco+personal+a+mi+USB+a+8+CUP+por+GB.">
+              <i class="fab fa-whatsapp"></i> Reservar
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- PRECIOS -->
+    <section id="precios" class="section">
+      <h2><i class="fas fa-tags"></i> Precios</h2>
+      <table class="prices-list">
+        <thead>
+          <tr>
+            <th>Servicio</th>
+            <th>Precio</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="price-icon"><i class="fas fa-desktop"></i></span>Resintalación de sistema operativo en PC</td>
+            <td>1000 CUP</td>
+          </tr>
+          <tr>
+            <td><span class="price-icon"><i class="fas fa-mobile-alt"></i></span>Eliminación de cuentas Google en móviles</td>
+            <td>1000 CUP</td>
+          </tr>
+          <tr>
+            <td><span class="price-icon"><i class="fas fa-unlock-alt"></i></span>Desbloqueo Windows Modo S en PC</td>
+            <td>300 CUP</td>
+          </tr>
+          <tr>
+            <td><span class="price-icon"><i class="fab fa-apple"></i></span>Instalación de Windows en Mac OS</td>
+            <td>1500 CUP</td>
+          </tr>
+          <tr>
+            <td><span class="price-icon"><i class="fas fa-key"></i></span>Desbloqueo de contraseña en PC</td>
+            <td>200 CUP</td>
+          </tr>
+          <tr>
+            <td><span class="price-icon"><i class="fas fa-key"></i></span>Desbloqueo de contraseña en móviles</td>
+            <td>500 CUP</td>
+          </tr>
+          <tr>
+            <td><span class="price-icon"><i class="fas fa-key"></i></span>Desbloqueo de contraseña con cuenta Google</td>
+            <td>1000 CUP</td>
+          </tr>
+          <tr>
+            <td>
+              <span class="price-icon"><i class="fas fa-usb"></i></span>
+              Llenado/grabación de memorias USB por encargo (descarga de archivos, series, novelas, etc.)
+            </td>
+            <td>50 - 300 CUP<small style="display:block;color:#666;font-size:0.89em;">(según cantidad y tipo de encargo)</small></td>
+          </tr>
+          <tr>
+            <td>
+              <span class="price-icon"><i class="fas fa-hdd"></i></span>
+              Copia desde banco personal (colección local de archivos)
+            </td>
+            <td>8 CUP / GB</td>
+          </tr>
+        </tbody>
+      </table>
+      <p style="font-size:0.96rem;color:var(--color-accent);text-align:center;">
+        *El precio de llenado de memorias USB por encargo depende del pedido y la inversión en descargas.<br>
+        *Para copias desde mi banco personal, solo pagas por la cantidad de GB copiados.
+      </p>
+    </section>
+    <!-- CONTACTO -->
+    <section id="contacto" class="section">
+      <h2><i class="fas fa-address-book"></i> Contacto</h2>
+      <ul class="contact-list">
+        <li>
+          <i class="fab fa-whatsapp"></i>
+          <a href="https://wa.me/5356639178?text=Hola%2C+necesito+su+ayuda+con+un+servicio+inform%C3%A1tico." target="_blank">
+            Escribir por WhatsApp
+          </a>
+        </li>
+        <li>
+          <i class="fas fa-phone"></i>
+          <a href="tel:+5356639178">
+            Llamar al +53 56639178
+          </a>
+        </li>
+        <li>
+          <i class="far fa-envelope"></i>
+          <a href="mailto:pirataspyxhub@gmail.com" target="_blank">pirataspyxhub@gmail.com.com</a>
+        </li>
+        <li>
+          <i class="fab fa-github"></i>
+          <a href="https://github.com/adguardtch" target="_blank">adguardtch</a>
+        </li>
+        <li>
+          <i class="fab fa-facebook"></i>
+          <a href="https://www.facebook.com/rodolfo.jara.264731?mibextid=ZbWKwL" target="_blank">Facebook</a>
+        </li>
+        <li>
+          <i class="fab fa-instagram"></i>
+          <a href="https://www.instagram.com/rodolfo_jara_sombra?igsh=MXdpNWdmZDJwN3o1MA==" target="_blank">Instagram</a>
+        </li>
+      </ul>
+    </section>
+  </main>
+  <footer>
+    © 2025 Pirata Spyx hub — Todos los derechos reservados.<br>
+    <span class="rights">Sitio desarrollado para ofrecer soluciones informáticas profesionales y confiables.</span>
+  </footer>
+  <script>
+    function showSection(sectionId) {
+      // Ocultar todas las secciones
+      document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
+      // Mostrar la seleccionada
+      document.getElementById(sectionId).classList.add('active');
+      // Actualizar botones del menú
+      document.querySelectorAll('nav button').forEach(btn => btn.classList.remove('active'));
+      document.getElementById('nav-' + sectionId).classList.add('active');
+      // Scroll al top del contenido en móviles
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  </script>
+</body>
+</html>
